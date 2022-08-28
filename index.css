@@ -26,3 +26,7 @@
   margin-bottom: 1rem;
   cursor:pointer;
 }
+
+body::-webkit-scrollbar {
+  display: none;
+}
