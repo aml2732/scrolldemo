@@ -1,0 +1,28 @@
+#scrolldemo-container{
+  position:relative;
+  height:100%;
+  width:100%;
+}
+
+
+.scrolldemo-section{
+  height:100vh;
+  width:100vw;
+  position: relative;
+  /*overflow: hidden;*/
+}
+
+.scrolldemo-button-container{
+  position:fixed;
+  top: calc( 50% - 2rem);
+  right: 1rem;
+}
+
+.scrolldemo-button{
+  background-color: blue;
+  border-radius: 50%;
+  padding:1rem;
+  color:white;
+  margin-bottom: 1rem;
+  cursor:pointer;
+}

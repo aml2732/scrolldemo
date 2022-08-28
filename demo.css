@@ -1,0 +1,18 @@
+/*Demo section colors*/
+.scrolldemo-demo-blue{background-color: #ADD8E6;}
+.scrolldemo-demo-green{background-color: #90EE90;}
+.scrolldemo-demo-red{background-color:#FF9494}
+.scrolldemo-demo-orange{background-color: #FFCE94;}
+.scrolldemo-demo-yellow{background-color: #FFFF94;}
+
+.scrolldemo-section >div> h1{
+  text-align: center;
+  margin-top:50vh;
+  margin-bottom:50vh;
+}
+
+.scrolldemo-section >div{
+  height:100%;
+  width:100%;
+  position:absolute;
+}
