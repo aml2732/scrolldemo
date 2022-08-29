@@ -1,4 +1,3 @@
-//window.scrollTo(0,0)
 var setupComplete = false;
 var scrollLock = false;
 var totalNumberOfSections = 0;
@@ -17,13 +16,11 @@ function scrollIdIntoView(id){
 function scrolldemoScrollIntoView(amount){
   //Find OLD active element
   let oldActiveElement = document.getElementsByClassName(activeClassName)[0];
-  console.log("oldActiveElement",oldActiveElement)
   let oldId = oldActiveElement.id;
   let oldIndex = oldId.replace(sectionPrefix, "")
   //Get the element of oldActiveIndex+amount
   let oldIndexAsInteger = parseInt(oldIndex);
   let newIndexAsInteger = oldIndexAsInteger + amount;
-  console.log("-- newIndexAsInteger", newIndexAsInteger, ">",totalNumberOfSections);
   if(newIndexAsInteger>=totalNumberOfSections){
     console.log("last section already reached; Cannot scroll further")
     return;
@@ -35,12 +32,10 @@ function scrolldemoScrollIntoView(amount){
   oldActiveElement.classList.remove(activeClassName)
   let idToQuery = sectionPrefix + newIndexAsInteger;
   //Scroll to that bad boy.
-  console.log("id to query", idToQuery)
   let newActiveElement = document.getElementById(idToQuery);
   newActiveElement.classList.add(activeClassName)
   scrollIdIntoView(idToQuery)
 }
-
 
 function initializeScrolldemo(){
   if(!setupComplete){
@@ -64,41 +59,7 @@ function initializeScrolldemo(){
     attachPoint.append(buttonContainer)
   }
 
-  //edit onscroll behavior to do what the buttons do
-  /*document.onscroll = function scroll(event) {
-    event.preventDefault();
-    if(scrollLock){return;}
-    scrollLock = true;
-    if(window.scrollY<oldScroll){//prev
-      scrolldemoScrollIntoView(-1)
-    }else{//next
-      scrolldemoScrollIntoView(1);
-    }
-    setTimeout(function(){scrollLock = false;},2000)
-
- }*/
-
-/* window.onscroll = function(event){
-   if(scrollLock){
-     return;
-   }
-   scrollLock = true;
-   let newScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-   console.log("new vs old", newScrollPosition, oldScrollPosition)
-   if (newScrollPosition > oldScrollPosition){
-     scrolldemoScrollIntoView(1);
-  } else if(newScrollPosition <oldScrollPosition) {
-     scrolldemoScrollIntoView(-1);
-  }
-  else{
-    setTimeout(function(){scrollLock = false;},2000)
-    return; //equal no op
-  }
-  oldScrollPosition = newScrollPosition <= 0 ? 0 : newScrollPosition;
-  setTimeout(function(){scrollLock = false;},2000)
-  event.preventDefault();
-}*/
-
+  //Make the arrow keys cause auto scroll. Up and down supported
   document.addEventListener('keydown', function (event){
     console.log("got to onKeydown", event)
     switch (event.key) {
@@ -113,9 +74,45 @@ function initializeScrolldemo(){
     }
   })
 
+  //This seems to be the event triggered by my surface pro
+  document.addEventListener('wheel', function(event){
+    console.log("onwheel called")
+    event.preventDefault()
+    event.stopPropagation()
+    event.stopImmediatePropagation()
+    if(!scrollLock){
+      scrollLock = true;
+      if (event.deltaY >0){
+        scrolldemoScrollIntoView(1);
+     } else if(event.deltaY < 0) {
+        scrolldemoScrollIntoView(-1);
+     }
+     setTimeout(function(){scrollLock = false;},1000)
+    }
+    return false;
+  }, {passive:false})
+
+  //Uncertain about these.
+  document.addEventListener('touchmove', function(event){
+    console.log("touchmove called")
+    event.preventDefault()
+    event.stopPropagation()
+    event.stopImmediatePropagation()
+    return false;
+  })
+
+  document.addEventListener('scroll', function(event){
+    console.log("onscroll called")
+    event.preventDefault()
+    event.stopPropagation()
+    event.stopImmediatePropagation()
+    return false;
+  }, false)
 
   setupComplete = true;
 }
+
+
 
 
 function navigationButtonClick(action){
